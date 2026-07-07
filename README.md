@@ -43,7 +43,7 @@ When editing a `.swift` file, you will find two new icons in the top-right corne
 - **Remove:** `command + option + K`
 
 <div align="center">
-   <img width="1822" height="1068" alt="Screen Recording 2026-07-07 at 23 45 36" src="https://github.com/user-attachments/assets/d1f8a5d1-fd1d-4cae-9ffe-723cc7a614fe" />
+   <img width="640" height="375" alt="Screen Recording 2026-07-07 at 23 45 36" src="https://github.com/user-attachments/assets/d1f8a5d1-fd1d-4cae-9ffe-723cc7a614fe" />
 </div>
 
 ---
