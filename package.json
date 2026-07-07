@@ -4,6 +4,10 @@
   "description": "One-tap generate & remove Swift InjectionNext boilerplate for SwiftUI",
   "version": "1.1.0",
   "publisher": "adjiesatryo",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ajinumoto/swift-injection-generator.git"
+  },
   "engines": {
     "vscode": "^1.80.0"
   },
