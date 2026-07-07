@@ -35,8 +35,8 @@ When editing a `.swift` file, you will find two new icons in the top-right corne
 - Click **🗑️ (Trash)** to **Remove** Swift Injection.
 
 ### 2. Keyboard Shortcuts
-- **Generate:** `Cmd + Alt + I` (Mac) or `Ctrl + Alt + I` (Windows)
-- **Remove:** `Cmd + Alt + U` (Mac) or `Ctrl + Alt + U` (Windows)
+- **Generate:** `command + option + I` (Mac)
+- **Remove:** `command + option + U` (Mac)
 
 ---
 
@@ -55,7 +55,7 @@ When editing a `.swift` file, you will find two new icons in the top-right corne
    - Go to Extensions (`Cmd+Shift+X`).
    - Click the `...` menu in the top-right.
    - Choose **Install from VSIX...**
-   - Select `swift-injection-generator-1.1.0.vsix`.
+   - Select `swift-injection-generator-xxx.vsix`.
 
 ---
 
