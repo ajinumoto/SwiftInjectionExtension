@@ -1,4 +1,4 @@
-# Swift SwiftUI Injection Generator
+# Swift Injection VS Code Extension
 
 A lightweight, productivity-focused VS Code extension to **generate** and **remove** Swift `InjectionNext` boilerplate code in SwiftUI Views with exactly **one tap** or a keyboard shortcut.
 
@@ -35,8 +35,8 @@ When editing a `.swift` file, you will find two new icons in the top-right corne
 - Click **🗑️ (Trash)** to **Remove** Swift Injection.
 
 ### 2. Keyboard Shortcuts
-- **Generate:** `command + option + I` (Mac)
-- **Remove:** `command + option + U` (Mac)
+- **Generate:** `command + option + I`
+- **Remove:** `command + option + U`
 
 ---
 
