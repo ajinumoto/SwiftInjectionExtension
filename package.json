@@ -55,8 +55,8 @@
       },
       {
         "command": "swift-injection.remove",
-        "key": "cmd+alt+u",
-        "mac": "cmd+alt+u",
+        "key": "cmd+alt+k",
+        "mac": "cmd+alt+k",
         "when": "editorLangId == swift"
       }
     ]

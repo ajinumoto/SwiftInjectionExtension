@@ -40,7 +40,7 @@ When editing a `.swift` file, you will find two new icons in the top-right corne
 
 ### 2. Keyboard Shortcuts
 - **Generate:** `command + option + I`
-- **Remove:** `command + option + U`
+- **Remove:** `command + option + K`
 
 ---
 
