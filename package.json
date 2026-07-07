@@ -2,7 +2,7 @@
   "name": "swift-injection-generator",
   "displayName": "Swift Injection Generator",
   "description": "One-tap generate & remove Swift InjectionNext boilerplate for SwiftUI",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "publisher": "Pamungkas",
   "icon": "images/logo.png",
   "repository": {
