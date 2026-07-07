@@ -3,7 +3,8 @@
   "displayName": "Swift Injection Generator",
   "description": "One-tap generate & remove Swift InjectionNext boilerplate for SwiftUI",
   "version": "1.1.0",
-  "publisher": "adjiesatryo",
+  "publisher": "Pamungkas",
+  "icon": "images/logo.png",
   "repository": {
     "type": "git",
     "url": "https://github.com/ajinumoto/swift-injection-generator.git"
@@ -22,12 +23,12 @@
     "commands": [
       {
         "command": "swift-injection.generate",
-        "title": "Generate Swift Injection",
+        "title": "⚡ One-Tap Generate",
         "icon": "$(zap)"
       },
       {
         "command": "swift-injection.remove",
-        "title": "Remove Swift Injection",
+        "title": "🗑️ One-Tap Remove",
         "icon": "$(trash)"
       }
     ],
@@ -42,6 +43,18 @@
           "command": "swift-injection.remove",
           "when": "editorLangId == swift",
           "group": "navigation@2"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "swift-injection.generate",
+          "when": "editorLangId == swift",
+          "group": "swift-injection@1"
+        },
+        {
+          "command": "swift-injection.remove",
+          "when": "editorLangId == swift",
+          "group": "swift-injection@2"
         }
       ]
     },
