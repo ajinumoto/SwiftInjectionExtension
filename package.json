@@ -1,0 +1,70 @@
+{
+  "name": "swift-injection-generator",
+  "displayName": "Swift Injection Generator",
+  "description": "One-tap generate & remove Swift InjectionNext boilerplate for SwiftUI",
+  "version": "1.1.0",
+  "publisher": "adjiesatryo",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onLanguage:swift"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "swift-injection.generate",
+        "title": "Generate Swift Injection",
+        "icon": "$(zap)"
+      },
+      {
+        "command": "swift-injection.remove",
+        "title": "Remove Swift Injection",
+        "icon": "$(trash)"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "swift-injection.generate",
+          "when": "editorLangId == swift",
+          "group": "navigation@1"
+        },
+        {
+          "command": "swift-injection.remove",
+          "when": "editorLangId == swift",
+          "group": "navigation@2"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "swift-injection.generate",
+        "key": "cmd+alt+i",
+        "mac": "cmd+alt+i",
+        "when": "editorLangId == swift"
+      },
+      {
+        "command": "swift-injection.remove",
+        "key": "cmd+alt+u",
+        "mac": "cmd+alt+u",
+        "when": "editorLangId == swift"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "clean": "rm -rf out *.vsix"
+  },
+  "devDependencies": {
+    "@types/node": "^16.x.x",
+    "@types/vscode": "^1.80.0",
+    "typescript": "^5.0.0"
+  }
+}
