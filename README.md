@@ -1,5 +1,9 @@
 # Swift Injection VS Code Extension
 
+<div align="center">
+   <img width="128" height="128" alt="Adobe Express - file-6" src="https://github.com/user-attachments/assets/0a8327a3-e997-4f22-a831-c2a68abf4886" />
+</div>
+
 A lightweight, productivity-focused VS Code extension to **generate** and **remove** Swift `InjectionNext` boilerplate code in SwiftUI Views with exactly **one tap** or a keyboard shortcut.
 
 Designed to seamlessly match modular SwiftUI layouts and strict sorting/formatting guidelines (e.g. alphabetical imports, proper block-level indentation).
@@ -8,8 +12,8 @@ Designed to seamlessly match modular SwiftUI layouts and strict sorting/formatti
 
 ## Features
 
-- **⚡ One-Tap Generate (`Zap` Icon):** Inserts all InjectionNext boilerplate code into your active SwiftUI file instantly.
-- **🗑️ One-Tap Remove (`Trash` Icon):** Completely and safely cleans up all Swift InjectionNext boilerplate before you make commits or open Pull Requests.
+- **⚡ One-Tap Generate:** Inserts all InjectionNext boilerplate code into your active SwiftUI file instantly.
+- **🗑️ One-Tap Remove:** Completely and safely cleans up all Swift InjectionNext boilerplate before you make commits or open Pull Requests.
 - **⌨️ Intuitive Keyboard Shortcuts:** No need to lift your hands off the keyboard.
 
 ---
@@ -31,8 +35,8 @@ The extension parses your active SwiftUI View and intelligently inserts three co
 
 ### 1. Editor Toolbar Icons (One-Tap)
 When editing a `.swift` file, you will find two new icons in the top-right corner of your editor toolbar:
-- Click **⚡ (Zap)** to **Generate** Swift Injection.
-- Click **🗑️ (Trash)** to **Remove** Swift Injection.
+- Click **⚡** to **Generate** Swift Injection.
+- Click **🗑️** to **Remove** Swift Injection.
 
 ### 2. Keyboard Shortcuts
 - **Generate:** `command + option + I`
