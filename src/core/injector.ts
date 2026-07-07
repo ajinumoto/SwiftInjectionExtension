@@ -64,15 +64,18 @@ export function insertObserveInjection(text: string): string {
     for (let i = 0; i < lines.length; i++) {
         const match = lines[i].match(structRegex);
         if (match) {
-            let indent = "  "; // Default 2 spaces
-            if (i + 1 < lines.length) {
-                const nextLineMatch = lines[i + 1].match(/^(\s+)/);
-                if (nextLineMatch) {
-                    indent = nextLineMatch[1];
+            const protocols = match[2];
+            if (protocols.includes("View")) {
+                let indent = "  "; // Default 2 spaces
+                if (i + 1 < lines.length) {
+                    const nextLineMatch = lines[i + 1].match(/^(\s+)/);
+                    if (nextLineMatch) {
+                        indent = nextLineMatch[1];
+                    }
                 }
+                lines.splice(i + 1, 0, `${indent}@ObserveInjection var inject`);
+                break;
             }
-            lines.splice(i + 1, 0, `${indent}@ObserveInjection var inject`);
-            break;
         }
     }
     return lines.join("\n");

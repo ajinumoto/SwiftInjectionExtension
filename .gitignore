@@ -1,15 +1,6 @@
-# Dependencies
 node_modules/
-
-# Compilation outputs
 out/
-
-# VSIX packages
 *.vsix
-
-# OS metadata
 .DS_Store
 Thumbs.db
-
-# VS Code temporary files
-.vscode-test/
+package-lock.json
