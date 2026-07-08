@@ -20,12 +20,12 @@ Designed to seamlessly match modular SwiftUI layouts and strict sorting/formatti
 
 ## How It Works
 
-The extension parses your active SwiftUI View and intelligently inserts three core elements according to Erafone's strict layout rules:
+The extension parses your active SwiftUI View and intelligently inserts three core elements according to strict layout rules:
 
 1. **`import Inject`**
    - Placed automatically in alphabetical order within your `import` block.
 2. **`@ObserveInjection var inject`**
-   - Placed as the first property inside your main `struct` View, matching your file's local indentation perfectly (supports 2-space or 4-space layouts).
+   - Restrict this implementation exclusively to the first struct, provided it explicitly conforms to a protocol containing the term 'View' (ex. 'View',  custom protocol like 'WrappedView' or 'ThemeableView').
 3. **`.enableInjection()`**
    - Placed precisely as the very last modifier of your main `body` property (right before the closing brace).
 
@@ -50,10 +50,10 @@ When editing a `.swift` file, you will find two new icons in the top-right corne
 
 ## Installation
 
-### 1. From VS Code Extension Marketplace (Recommended)
-1. Open VS Code.
-2. Open Extensions view (`Cmd+Shift+X` on macOS, `Ctrl+Shift+X` on Windows/Linux).
-3. Search for **Swift Injection Generator** or **Pamungkas.swift-injection-generator**.
+### 1. From IDE (VS Code, Cursor, Kiro, Antigravity, or any Forked VS Code) Extension Marketplace (Recommended)
+1. Open IDE.
+2. Open Extensions view (`Cmd+Shift+X`).
+3. Search for **Pamungkas.swift-injection-generator**.
 4. Click **Install**.
 
 ### 2. Manual Installation (From Source)
