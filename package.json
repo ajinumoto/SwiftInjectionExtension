@@ -2,7 +2,7 @@
   "name": "swift-injection-generator",
   "displayName": "Swift Injection Generator/Remover",
   "description": "Generate and remove InjectionNext boilerplate code in SwiftUI with one tap or a keyboard shortcut.",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "publisher": "Pamungkas",
   "icon": "images/logo.png",
   "repository": {
@@ -13,6 +13,8 @@
     "vscode": "^1.80.0"
   },
   "categories": [
+    "Programming Languages",
+    "Snippets",
     "Other"
   ],
   "activationEvents": [

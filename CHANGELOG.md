@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.4] - 2026-07-08
+### Added
+- Marketplace Discoverability: Added `Programming Languages` and `Snippets` categories to `package.json` for better reach.
+
+## [1.2.3] - 2026-07-07
+### Added
+- Marketplace Installation: Added instructions for installing directly from the VS Code Marketplace.
+- Media Assets: Added rich-media preview recording and logo to `README.md`.
+
+## [1.2.2] - 2026-07-07
+### Changed
+- Keyboard Shortcuts: Remapped **Remove Swift Injection** default keybinding from `cmd+alt+u` to `cmd+alt+k` to prevent cursor navigation conflicts.
+
+## [1.2.1] - 2026-07-07
+### Fixed
+- Protocol Targeting: Restricted `@ObserveInjection` insertion to target structs explicitly conforming to `View` protocol.
+- Housekeeping: Updated `.gitignore` rules and removed redundant files.
+
 ## [1.2.0] - 2026-07-07
 ### Added
 - Context Menu Support: Added **One-Tap Generate** and **One-Tap Remove** options to the VS Code right-click editor context menu for Swift files.
