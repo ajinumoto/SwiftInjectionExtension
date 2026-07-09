@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.0] - 2026-07-09
+### Added
+- **Rebranding**: Renamed to **Swift Injection Companion (Hot Reload)** to reflect its role as a comprehensive toolset.
+- **Status Bar Integration**: Real-time indicator showing if InjectionNext is running and if the current project is being watched.
+- **Auto-Watch Project**: Seamlessly registers the current workspace with InjectionNext upon opening.
+- **Socket Communication**: Direct integration with InjectionNext's Unix Domain Socket for fast, lightweight status checks.
+- **Smart Notifications**: Interactive warnings with "Open InjectionNext" and "Watch Project" actions.
+- **App Launch Handling**: Automatically detects if the app is missing and provides a direct download link to the GitHub repository.
+- **Visual Feedback**: Loading spinners and busy states for all background communication tasks.
+
+### Refactored
+- **Clean Architecture**: Reorganized the codebase into Models, Services, Utils, and Commands for industry-standard maintainability.
+- **Path Normalization**: Robust project path matching that handles symlinks and macOS-specific path variations.
+
 ## [1.2.4] - 2026-07-08
 ### Added
 - Marketplace Discoverability: Added `Programming Languages` and `Snippets` categories to `package.json` for better reach.
