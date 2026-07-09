@@ -1,7 +1,7 @@
 {
   "name": "swift-injection-generator",
-  "displayName": "Swift Injection Generator/Remover",
-  "description": "Generate and remove InjectionNext boilerplate code in SwiftUI with one tap or a keyboard shortcut.",
+  "displayName": "Swift Injection Companion (Hot Reload)",
+  "description": "The ultimate companion for InjectionNext. Auto-watch projects, status monitoring, and one-tap boilerplate generator/remover for SwiftUI hot reloading.",
   "version": "1.2.5",
   "publisher": "Pamungkas",
   "icon": "images/logo.png",

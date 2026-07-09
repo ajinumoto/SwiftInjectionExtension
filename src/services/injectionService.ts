@@ -59,7 +59,12 @@ export class InjectionService {
     async launchApp(): Promise<boolean> {
         return new Promise((resolve) => {
             exec('open -a InjectionNext', (error) => {
-                resolve(!error);
+                if (error) {
+                    console.error('Failed to launch InjectionNext:', error);
+                    resolve(false);
+                } else {
+                    resolve(true);
+                }
             });
         });
     }

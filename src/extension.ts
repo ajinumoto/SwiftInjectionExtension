@@ -12,11 +12,16 @@ export function activate(context: vscode.ExtensionContext) {
 
     let openNextDisposable = vscode.commands.registerCommand('swift-injection.openInjectionNext', async () => {
         statusBarService.setBusy(true);
-        await injectionService.launchApp();
-        setTimeout(() => {
+        const success = await injectionService.launchApp();
+        if (!success) {
             statusBarService.setBusy(false);
-            statusBarService.update();
-        }, 2000);
+            await handleLaunchFailure();
+        } else {
+            setTimeout(() => {
+                statusBarService.setBusy(false);
+                statusBarService.update();
+            }, 2000);
+        }
     });
 
     let watchCurrentDisposable = vscode.commands.registerCommand('swift-injection.watchProject', async () => {
@@ -35,11 +40,16 @@ export function activate(context: vscode.ExtensionContext) {
         const status = await injectionService.getStatus();
         if (!status.isRunning) {
             statusBarService.setBusy(true);
-            await injectionService.launchApp();
-            setTimeout(() => {
+            const success = await injectionService.launchApp();
+            if (!success) {
                 statusBarService.setBusy(false);
-                statusBarService.update();
-            }, 2000);
+                await handleLaunchFailure();
+            } else {
+                setTimeout(() => {
+                    statusBarService.setBusy(false);
+                    statusBarService.update();
+                }, 2000);
+            }
         } else {
             const workspaceFolders = vscode.workspace.workspaceFolders;
             if (workspaceFolders) {
@@ -74,6 +84,17 @@ export function activate(context: vscode.ExtensionContext) {
 
     // Auto-watch project on activation
     autoWatchProject();
+}
+
+async function handleLaunchFailure() {
+    const selection = await vscode.window.showErrorMessage(
+        'InjectionNext app not found on your system. Do you want to download it from GitHub?',
+        'Download',
+        'Cancel'
+    );
+    if (selection === 'Download') {
+        vscode.env.openExternal(vscode.Uri.parse('https://github.com/johnno1962/InjectionNext'));
+    }
 }
 
 async function autoWatchProject() {
