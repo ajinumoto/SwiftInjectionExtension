@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { generateInjection } from '../core/injector';
-import { checkInjectionNextStatus, openInjectionNext } from '../core/status';
+import { injectionService } from '../services/injectionService';
+import { normalizePath } from '../utils/path';
 
 export async function generateCommand() {
     const editor = vscode.window.activeTextEditor;
@@ -9,14 +10,34 @@ export async function generateCommand() {
     const document = editor.document;
     if (document.languageId !== 'swift') return;
 
-    const isRunning = await checkInjectionNextStatus();
-    if (!isRunning) {
+    const status = await injectionService.getStatus();
+    
+    if (!status.isRunning) {
         const selection = await vscode.window.showWarningMessage(
             'InjectionNext is not running. Please start the InjectionNext app.',
             'Open InjectionNext'
         );
         if (selection === 'Open InjectionNext') {
-            await openInjectionNext();
+            await injectionService.launchApp();
+        }
+        return;
+    }
+
+    const workspaceFolders = vscode.workspace.workspaceFolders;
+    if (workspaceFolders) {
+        const projectPath = workspaceFolders[0].uri.fsPath;
+        const normalizedCurrent = normalizePath(projectPath);
+        const isWatched = status.watchedDirectories?.some(dir => normalizePath(dir) === normalizedCurrent);
+        
+        if (!isWatched) {
+            const selection = await vscode.window.showWarningMessage(
+                `Project is not being watched by InjectionNext.`,
+                'Watch Project'
+            );
+            if (selection === 'Watch Project') {
+                await injectionService.watchProject(projectPath);
+            }
+            return;
         }
     }
 

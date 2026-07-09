@@ -1,43 +1,98 @@
 import * as vscode from 'vscode';
 import { generateCommand } from './commands/generate';
 import { removeCommand } from './commands/remove';
-import { checkInjectionNextStatus, openInjectionNext } from './core/status';
-
-let statusBarItem: vscode.StatusBarItem;
+import { injectionService } from './services/injectionService';
+import { statusBarService } from './services/statusBarService';
+import { normalizePath } from './utils/path';
 
 export function activate(context: vscode.ExtensionContext) {
+    // Register commands
     let generateDisposable = vscode.commands.registerCommand('swift-injection.generate', generateCommand);
     let removeDisposable = vscode.commands.registerCommand('swift-injection.remove', removeCommand);
 
-    // Status Bar Item
-    statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
-    statusBarItem.command = 'swift-injection.openInjectionNext';
-    context.subscriptions.push(statusBarItem);
-
     let openNextDisposable = vscode.commands.registerCommand('swift-injection.openInjectionNext', async () => {
-        await openInjectionNext();
+        statusBarService.setBusy(true);
+        await injectionService.launchApp();
+        setTimeout(() => {
+            statusBarService.setBusy(false);
+            statusBarService.update();
+        }, 2000);
     });
 
-    context.subscriptions.push(generateDisposable, removeDisposable, openNextDisposable);
+    let watchCurrentDisposable = vscode.commands.registerCommand('swift-injection.watchProject', async () => {
+        const workspaceFolders = vscode.workspace.workspaceFolders;
+        if (workspaceFolders) {
+            statusBarService.setBusy(true);
+            await injectionService.watchProject(workspaceFolders[0].uri.fsPath);
+            statusBarService.setBusy(false);
+            statusBarService.update();
+        }
+    });
+
+    let statusBarActionDisposable = vscode.commands.registerCommand('swift-injection.statusBarAction', async () => {
+        if (statusBarService.busy) return;
+        
+        const status = await injectionService.getStatus();
+        if (!status.isRunning) {
+            statusBarService.setBusy(true);
+            await injectionService.launchApp();
+            setTimeout(() => {
+                statusBarService.setBusy(false);
+                statusBarService.update();
+            }, 2000);
+        } else {
+            const workspaceFolders = vscode.workspace.workspaceFolders;
+            if (workspaceFolders) {
+                statusBarService.setBusy(true);
+                const projectPath = workspaceFolders[0].uri.fsPath;
+                const normalizedCurrent = normalizePath(projectPath);
+                const isWatched = status.watchedDirectories?.some(dir => normalizePath(dir) === normalizedCurrent);
+                if (!isWatched) {
+                    await injectionService.watchProject(projectPath);
+                }
+                statusBarService.setBusy(false);
+                statusBarService.update();
+            }
+        }
+    });
+
+    context.subscriptions.push(
+        generateDisposable, 
+        removeDisposable, 
+        openNextDisposable, 
+        watchCurrentDisposable,
+        statusBarActionDisposable,
+        statusBarService
+    );
 
     // Update status bar periodically
-    updateStatusBar();
-    const interval = setInterval(updateStatusBar, 5000);
+    statusBarService.update();
+    const interval = setInterval(() => {
+        if (!statusBarService.busy) statusBarService.update();
+    }, 5000);
     context.subscriptions.push({ dispose: () => clearInterval(interval) });
+
+    // Auto-watch project on activation
+    autoWatchProject();
 }
 
-async function updateStatusBar() {
-    const isRunning = await checkInjectionNextStatus();
-    if (isRunning) {
-        statusBarItem.text = `$(zap) InjectionActive`;
-        statusBarItem.tooltip = 'InjectionNext is running';
-        statusBarItem.backgroundColor = undefined;
-    } else {
-        statusBarItem.text = `$(warning) InjectionNext Off`;
-        statusBarItem.tooltip = 'InjectionNext is not running. Click to open.';
-        statusBarItem.backgroundColor = new vscode.ThemeColor('statusBarItem.warningBackground');
+async function autoWatchProject() {
+    const workspaceFolders = vscode.workspace.workspaceFolders;
+    if (workspaceFolders && workspaceFolders.length > 0) {
+        const projectPath = workspaceFolders[0].uri.fsPath;
+        const normalizedCurrent = normalizePath(projectPath);
+        try {
+            const status = await injectionService.getStatus();
+            if (status.isRunning) {
+                const isWatched = status.watchedDirectories?.some(dir => normalizePath(dir) === normalizedCurrent);
+                if (!isWatched) {
+                    await injectionService.watchProject(projectPath);
+                }
+            }
+        } catch (error) {
+            console.error('Failed to auto-watch project:', error);
+        }
     }
-    statusBarItem.show();
 }
 
 export function deactivate() {}
