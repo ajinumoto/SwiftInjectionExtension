@@ -1,0 +1,10 @@
+.vscode/**
+.vscode-test/**
+.gitignore
+.git/**
+.codegraph/**
+tsconfig.json
+src/**
+node_modules/**
+ExampleView.swift
+package-lock.json
