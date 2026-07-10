@@ -42,7 +42,7 @@ export class StatusBarService {
             this.statusBarItem.backgroundColor = new vscode.ThemeColor('statusBarItem.warningBackground');
         } else {
             const normalizedCurrent = projectPath ? normalizePath(projectPath) : undefined;
-            const isWatched = normalizedCurrent ? status.watchedDirectories?.some(dir => normalizePath(dir) === normalizedCurrent) : false;
+            const isWatched = normalizedCurrent ? status.watchedDirectories?.some((dir: string) => normalizePath(dir) === normalizedCurrent) : false;
             
             if (isWatched) {
                 this.statusBarItem.text = `$(zap) InjectionActive`;

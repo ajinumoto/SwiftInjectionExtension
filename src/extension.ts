@@ -4,6 +4,7 @@ import { removeCommand } from './commands/remove';
 import { injectionService } from './services/injectionService';
 import { statusBarService } from './services/statusBarService';
 import { logService } from './services/logService';
+import { DashboardViewProvider } from './services/dashboardViewProvider';
 import { normalizePath } from './utils/path';
 
 export function activate(context: vscode.ExtensionContext) {
@@ -61,7 +62,7 @@ export function activate(context: vscode.ExtensionContext) {
                 statusBarService.setBusy(true);
                 const projectPath = workspaceFolders[0].uri.fsPath;
                 const normalizedCurrent = normalizePath(projectPath);
-                const isWatched = status.watchedDirectories?.some(dir => normalizePath(dir) === normalizedCurrent);
+                const isWatched = status.watchedDirectories?.some((dir: string) => normalizePath(dir) === normalizedCurrent);
                 if (!isWatched) {
                     await injectionService.watchProject(projectPath);
                 }
@@ -71,6 +72,13 @@ export function activate(context: vscode.ExtensionContext) {
         }
     });
 
+    // Register Webview View Provider for sidebar dashboard
+    const dashboardProvider = new DashboardViewProvider(context);
+    let dashboardDisposable = vscode.window.registerWebviewViewProvider(
+        DashboardViewProvider.viewType,
+        dashboardProvider
+    );
+
     context.subscriptions.push(
         generateDisposable, 
         removeDisposable, 
@@ -78,10 +86,12 @@ export function activate(context: vscode.ExtensionContext) {
         openNextDisposable, 
         watchCurrentDisposable,
         statusBarActionDisposable,
+        dashboardDisposable,
         statusBarService,
         logService
     );
 
+    // Start log polling
     logService.startPolling();
 
     // Update status bar periodically
@@ -114,7 +124,7 @@ async function autoWatchProject() {
         try {
             const status = await injectionService.getStatus();
             if (status.isRunning) {
-                const isWatched = status.watchedDirectories?.some(dir => normalizePath(dir) === normalizedCurrent);
+                const isWatched = status.watchedDirectories?.some((dir: string) => normalizePath(dir) === normalizedCurrent);
                 if (!isWatched) {
                     await injectionService.watchProject(projectPath);
                 }

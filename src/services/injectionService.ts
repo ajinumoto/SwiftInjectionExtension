@@ -1,41 +1,35 @@
 import * as net from 'net';
 import * as fs from 'fs';
 import { exec } from 'child_process';
-import { InjectionStatus, LogEntry } from '../models/injection';
+import { LogEntry } from '../models/injection';
 import { normalizePath } from '../utils/path';
 
 const SOCKET_PATH = '/tmp/InjectionNext-control.sock';
 
 export class InjectionService {
     /**
-     * Gets the current status of InjectionNext app via socket.
+     * Generic method to send JSON command to InjectionNext control socket.
      */
-    async getStatus(): Promise<InjectionStatus> {
-        return new Promise((resolve) => {
+    private sendSocketCommand(payload: any): Promise<any> {
+        return new Promise((resolve, reject) => {
             if (!fs.existsSync(SOCKET_PATH)) {
-                resolve({ isRunning: false });
+                reject(new Error('InjectionNext socket not found'));
                 return;
             }
 
             const client = net.createConnection({ path: SOCKET_PATH });
-            client.setTimeout(500);
+            client.setTimeout(2000); // 2 second timeout
 
             let data = '';
             client.on('connect', () => {
-                client.write(JSON.stringify({ action: 'status' }) + '\n');
+                client.write(JSON.stringify(payload) + '\n');
             });
 
             client.on('data', (chunk) => {
                 data += chunk.toString();
                 try {
                     const response = JSON.parse(data);
-                    const rawDirs = response.data?.watching_directories || response.watching_directories || [];
-                    const watched = rawDirs.map((d: string) => normalizePath(d));
-                    
-                    resolve({ 
-                        isRunning: true, 
-                        watchedDirectories: watched
-                    });
+                    resolve(response);
                     client.end();
                 } catch (e) {
                     // Wait for more data
@@ -44,13 +38,38 @@ export class InjectionService {
 
             client.on('timeout', () => {
                 client.destroy();
-                resolve({ isRunning: false });
+                reject(new Error('Command timeout'));
             });
 
-            client.on('error', () => {
-                resolve({ isRunning: false });
+            client.on('error', (err) => {
+                reject(err);
             });
         });
+    }
+
+    /**
+     * Gets the current status of InjectionNext app via socket.
+     */
+    async getStatus(): Promise<any> {
+        if (!fs.existsSync(SOCKET_PATH)) {
+            return { isRunning: false };
+        }
+        try {
+            const response = await this.sendSocketCommand({ action: 'status' });
+            if (response && response.success) {
+                const rawDirs = response.data?.watching_directories || response.watching_directories || [];
+                const watched = rawDirs.map((d: string) => normalizePath(d));
+                return {
+                    isRunning: true,
+                    watchedDirectories: watched,
+                    data: response.data,
+                    success: true
+                };
+            }
+            return { isRunning: false };
+        } catch (error) {
+            return { isRunning: false };
+        }
     }
 
     /**
@@ -72,75 +91,48 @@ export class InjectionService {
     /**
      * Sends a watch_project command to InjectionNext.
      */
-    async watchProject(projectPath: string): Promise<void> {
-        return new Promise((resolve, reject) => {
-            if (!fs.existsSync(SOCKET_PATH)) {
-                reject(new Error('InjectionNext socket not found'));
-                return;
-            }
+    async watchProject(projectPath: string): Promise<any> {
+        return this.sendSocketCommand({ action: 'watch_project', path: projectPath });
+    }
 
-            const client = net.createConnection({ path: SOCKET_PATH });
-            const command = JSON.stringify({ action: 'watch_project', path: projectPath }) + '\n';
+    /**
+     * Sends an unhide_symbols command to InjectionNext.
+     */
+    async unhideSymbols(): Promise<any> {
+        return this.sendSocketCommand({ action: 'unhide_symbols' });
+    }
 
-            client.on('connect', () => {
-                client.write(command);
-                client.end();
-                resolve();
-            });
+    /**
+     * Sends a get_touch_events command to InjectionNext.
+     */
+    async getTouchEvents(): Promise<any> {
+        return this.sendSocketCommand({ action: 'get_touch_events' });
+    }
 
-            client.on('error', (err) => {
-                reject(err);
-            });
-        });
+    /**
+     * Sends a replay_touch_events command to InjectionNext.
+     */
+    async replayTouchEvents(events: any[]): Promise<any> {
+        return this.sendSocketCommand({ action: 'replay_touch_events', events });
     }
 
     /**
      * Gets logs from InjectionNext app since a given timestamp.
      */
     async getLogs(since?: number): Promise<LogEntry[]> {
-        return new Promise((resolve) => {
-            if (!fs.existsSync(SOCKET_PATH)) {
-                resolve([]);
-                return;
+        const payload: any = { action: 'get_logs' };
+        if (since !== undefined && since > 0) {
+            payload.since = since;
+        }
+        try {
+            const response = await this.sendSocketCommand(payload);
+            if (response.success && response.data && Array.isArray(response.data.logs)) {
+                return response.data.logs;
             }
-
-            const client = net.createConnection({ path: SOCKET_PATH });
-            client.setTimeout(500);
-
-            let data = '';
-            client.on('connect', () => {
-                const payload: any = { action: 'get_logs' };
-                if (since !== undefined && since > 0) {
-                    payload.since = since;
-                }
-                client.write(JSON.stringify(payload) + '\n');
-            });
-
-            client.on('data', (chunk) => {
-                data += chunk.toString();
-                try {
-                    const response = JSON.parse(data);
-                    if (response.success && response.data && Array.isArray(response.data.logs)) {
-                        resolve(response.data.logs);
-                        client.end();
-                    } else if (response.success === false) {
-                        resolve([]);
-                        client.end();
-                    }
-                } catch (e) {
-                    // Wait for more data
-                }
-            });
-
-            client.on('timeout', () => {
-                client.destroy();
-                resolve([]);
-            });
-
-            client.on('error', () => {
-                resolve([]);
-            });
-        });
+            return [];
+        } catch (error) {
+            return [];
+        }
     }
 }
 

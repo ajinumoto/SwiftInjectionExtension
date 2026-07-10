@@ -18,10 +18,29 @@
     "Other"
   ],
   "activationEvents": [
-    "onLanguage:swift"
+    "onLanguage:swift",
+    "onView:swift-injection.dashboard"
   ],
   "main": "./out/extension.js",
   "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "swift-injection-sidebar",
+          "title": "InjectionNext Companion",
+          "icon": "images/icon.png"
+        }
+      ]
+    },
+    "views": {
+      "swift-injection-sidebar": [
+        {
+          "type": "webview",
+          "id": "swift-injection.dashboard",
+          "name": "Panel"
+        }
+      ]
+    },
     "commands": [
       {
         "command": "swift-injection.generate",
