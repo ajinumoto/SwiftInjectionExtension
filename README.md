@@ -4,14 +4,15 @@
    <img width="128" height="128" alt="Swift Injection Companion" src="https://github.com/user-attachments/assets/0a8327a3-e997-4f22-a831-c2a68abf4886" />
 </div>
 
-The ultimate VS Code companion for [InjectionNext](https://github.com/johnno1962/InjectionNext). This extension bridges the gap between VS Code and the InjectionNext macOS app, providing seamless hot reloading for SwiftUI.
+The ultimate companion for [InjectionNext](https://github.com/johnno1962/InjectionNext) in VS Code. Automatically generate and clean up SwiftUI hot-reloading boilerplate with a single command or shortcut, with smart integration with the InjectionNext macOS app.
 
 ## 🚀 Key Features
 
-- **⚡ Smart Status Monitoring:** Real-time indicator in the Status Bar. Know instantly if InjectionNext is running and if it's watching your project.
-- **👁️ Auto-Watch Project:** Automatically tells InjectionNext to watch your workspace as soon as you open it.
-- **🛠️ One-Tap Boilerplate:** Generate or remove `@ObserveInjection` and `.enableInjection()` with a single click or shortcut.
-- **🔗 Direct App Integration:** Launch InjectionNext directly from VS Code if it's not running.
+- **⚡ Automatic Boilerplate Generation:** Instantly inject `import Inject`, `@ObserveInjection var inject`, and `.enableInjection()` into your SwiftUI views with a single tap or keyboard shortcut (`cmd + alt + i`).
+- **🗑️ Automatic Boilerplate Removal:** Completely clean up and remove all injection boilerplate from your SwiftUI files with a single tap or keyboard shortcut (`cmd + alt + k`).
+- **📶 Smart Status Monitoring:** Real-time status indicator in the Status Bar showing whether InjectionNext is running and active on your project.
+- **👁️ Auto-Watch Project:** Automatically registers your project workspace with InjectionNext on startup.
+- **🔗 Direct App Integration:** Launch InjectionNext directly from VS Code with a single click if it is not currently running.
 
 ---
 

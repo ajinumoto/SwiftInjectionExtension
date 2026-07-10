@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { removeInjection } from '../core/injector';
 
-export function removeCommand() {
+export async function removeCommand() {
     const editor = vscode.window.activeTextEditor;
     if (!editor) return;
 
@@ -16,7 +16,7 @@ export function removeCommand() {
         const lastLine = document.lineAt(document.lineCount - 1);
         const textRange = new vscode.Range(firstLine.range.start, lastLine.range.end);
         
-        editor.edit(editBuilder => {
+        await editor.edit(editBuilder => {
             editBuilder.replace(textRange, newText);
         });
     }
