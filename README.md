@@ -13,6 +13,8 @@ The ultimate companion for [InjectionNext](https://github.com/johnno1962/Injecti
 - **📶 Smart Status Monitoring:** Real-time status indicator in the Status Bar showing whether InjectionNext is running and active on your project.
 - **👁️ Auto-Watch Project:** Automatically registers your project workspace with InjectionNext on startup.
 - **🔗 Direct App Integration:** Launch InjectionNext directly from VS Code with a single click if it is not currently running.
+- **📶 Unified Companion Panel:** A custom Activity Bar sidebar representing the complete companion interface to supervise compilation, connected clients, and live status.
+- **⏺️ Touch Event Recorder (Macro):** Record live touch interaction events from your connected app, clear recorded events, and replay them sequentially to instantly recreate specific UI states after a hot reload.
 
 ---
 

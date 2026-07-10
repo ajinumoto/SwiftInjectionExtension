@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.1] - 2026-07-10
+### Added
+- **InjectionNext Companion Panel**: Introducing a unified sidebar in the VS Code Activity Bar (labeled "InjectionNext Companion") representing the complete companion interface.
+- **Live Status Overview**: Displays real-time status indicators (Xcode Running, Compiler Intercepted, Connected Client, and Device Injection) with a periodic 3-second live-status poll via control socket.
+- **Event Recorder (Touch Capturing & Replay Macro)**:
+  - **Record Action**: Fetches and aggregates active touch events from the connected client application, indicating the captured count via a color-coded badge.
+  - **Remove**: Clears recorded events in one click.
+  - **Replay**: Sends the recorded macro back to the client application for lightning-fast hot-reloaded UI state reproduction.
+- **Diagnostics & Log Utilities**: Combined "Unhide Symbols" (fixes default-argument symbol visibility) and "Show Logs" actions side-by-side.
+- **Clean Architecture Refactoring**: Restructured the panel by separating raw HTML/CSS/JS view templates (`src/views/dashboardHtml.ts`) from the controller and lifecycle logic (`src/services/dashboardViewProvider.ts`).
+
+### Fixed
+- **TypeScript Resolution**: Configured explicit `"types": ["node"]` compiler option in `tsconfig.json` to eliminate inline NodeJS type and global namespace errors inside VS Code's TS Server.
+- **Implicit Any Warnings**: Resolved explicit typing inside `statusBarService` to ensure standard compliance under strict compilation modes.
+
 ## [1.3.0] - 2026-07-09
 ### Added
 - **Rebranding**: Renamed to **Swift Injection Companion (Hot Reload)** to reflect its role as a comprehensive toolset.
