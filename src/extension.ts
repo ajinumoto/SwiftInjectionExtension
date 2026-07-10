@@ -3,12 +3,17 @@ import { generateCommand } from './commands/generate';
 import { removeCommand } from './commands/remove';
 import { injectionService } from './services/injectionService';
 import { statusBarService } from './services/statusBarService';
+import { logService } from './services/logService';
 import { normalizePath } from './utils/path';
 
 export function activate(context: vscode.ExtensionContext) {
     // Register commands
     let generateDisposable = vscode.commands.registerCommand('swift-injection.generate', generateCommand);
     let removeDisposable = vscode.commands.registerCommand('swift-injection.remove', removeCommand);
+    
+    let showLogsDisposable = vscode.commands.registerCommand('swift-injection.showLogs', () => {
+        logService.showChannel();
+    });
 
     let openNextDisposable = vscode.commands.registerCommand('swift-injection.openInjectionNext', async () => {
         statusBarService.setBusy(true);
@@ -69,11 +74,15 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(
         generateDisposable, 
         removeDisposable, 
+        showLogsDisposable,
         openNextDisposable, 
         watchCurrentDisposable,
         statusBarActionDisposable,
-        statusBarService
+        statusBarService,
+        logService
     );
+
+    logService.startPolling();
 
     // Update status bar periodically
     statusBarService.update();

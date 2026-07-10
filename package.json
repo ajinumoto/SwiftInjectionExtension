@@ -32,6 +32,11 @@
         "command": "swift-injection.remove",
         "title": "Remove Swift Injection",
         "icon": "$(trash)"
+      },
+      {
+        "command": "swift-injection.showLogs",
+        "title": "Swift Injection: Show Logs",
+        "icon": "$(terminal)"
       }
     ],
     "menus": {

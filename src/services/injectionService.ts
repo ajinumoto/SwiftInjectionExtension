@@ -1,7 +1,7 @@
 import * as net from 'net';
 import * as fs from 'fs';
 import { exec } from 'child_process';
-import { InjectionStatus } from '../models/injection';
+import { InjectionStatus, LogEntry } from '../models/injection';
 import { normalizePath } from '../utils/path';
 
 const SOCKET_PATH = '/tmp/InjectionNext-control.sock';
@@ -90,6 +90,55 @@ export class InjectionService {
 
             client.on('error', (err) => {
                 reject(err);
+            });
+        });
+    }
+
+    /**
+     * Gets logs from InjectionNext app since a given timestamp.
+     */
+    async getLogs(since?: number): Promise<LogEntry[]> {
+        return new Promise((resolve) => {
+            if (!fs.existsSync(SOCKET_PATH)) {
+                resolve([]);
+                return;
+            }
+
+            const client = net.createConnection({ path: SOCKET_PATH });
+            client.setTimeout(500);
+
+            let data = '';
+            client.on('connect', () => {
+                const payload: any = { action: 'get_logs' };
+                if (since !== undefined && since > 0) {
+                    payload.since = since;
+                }
+                client.write(JSON.stringify(payload) + '\n');
+            });
+
+            client.on('data', (chunk) => {
+                data += chunk.toString();
+                try {
+                    const response = JSON.parse(data);
+                    if (response.success && response.data && Array.isArray(response.data.logs)) {
+                        resolve(response.data.logs);
+                        client.end();
+                    } else if (response.success === false) {
+                        resolve([]);
+                        client.end();
+                    }
+                } catch (e) {
+                    // Wait for more data
+                }
+            });
+
+            client.on('timeout', () => {
+                client.destroy();
+                resolve([]);
+            });
+
+            client.on('error', () => {
+                resolve([]);
             });
         });
     }
